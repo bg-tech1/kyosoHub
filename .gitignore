@@ -26,6 +26,7 @@ go.work.sum
 # macで自動生成されるため無視
 .DS_Store
 
+backend/.dockerignore
+
 # frontend
 frontend/node_modules
-
