@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_REGION: ap-northeast-1
-  ECR_REGISTRY: 992382548989.dkr.ecr.ap-northeast-1.amazonaws.com/develop/kyosohub
+  ECR_REGISTRY: 992382548989.dkr.ecr.ap-northeast-1.amazonaws.com
 
 jobs:
   build:
@@ -40,5 +40,5 @@ jobs:
         with:
           push: true
           provenance: false
-          tags: ${{ env.ECR_REGISTRY }}/develop/skygallery:latest
+          tags: ${{ env.ECR_REGISTRY }}/develop/kyosohub:latest
           context: ./backend
