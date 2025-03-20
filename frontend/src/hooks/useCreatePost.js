@@ -8,6 +8,9 @@ export function useCreatePost() {
     const [category, setCategory] = useState("");
     const [createPostError, setCreatePostError] = useState(false);
     const openModal = () => {
+        setTitle("");
+        setDescription("");
+        setCategory("");
         setShowModal(true);
     };
     const closeModal = () => {

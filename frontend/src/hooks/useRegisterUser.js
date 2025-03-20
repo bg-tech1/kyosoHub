@@ -16,12 +16,11 @@ export function useRegisterUser() {
                 email,
                 password,
             });
+            setRegisterUserError(false);
+            navigate("/post");
         } catch (error) {
             console.log(error);
             setRegisterUserError(true);
-        } finally {
-            setRegisterUserError(false);
-            navigate("/post");
         }
     };
     return {

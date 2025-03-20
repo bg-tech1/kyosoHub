@@ -15,7 +15,7 @@ const UserProfile = ({
                     <CakeIcon className="w-5 h-5 text-gray-700 mr-2 inline-block" />
                     {userProfile.birthdate === '0001-01-01T00:00:00Z' ? '未回答' : userProfile.birthdate}
                 </h2>
-                <p className="text-gray-700 mt-1">{userProfile.bio || 'はじめまして、よろしくお願いします。'}</p>
+                <p className="text-gray-700 mt-1 whitespace-pre-wrap">{userProfile.bio || 'はじめまして、よろしくお願いします。'}</p>
                 <div className="flex items-center text-gray-700 space-x-4 mt-1">
                     <span>募集{postCount}件</span>
                     <span>参加中{paritcipationsCount}件</span>
