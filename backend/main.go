@@ -12,6 +12,6 @@ func main() {
 	// ルート設定
 	r := di.InitializeApp()
 
-	r.Run(":8080") // サーバー起動
+	r.Run(":8080")
 
 }
