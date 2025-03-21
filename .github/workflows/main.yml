@@ -42,4 +42,4 @@ jobs:
           provenance: false
           tags: ${{ env.ECR_REGISTRY }}/develop/kyosohub:latest
           context: ./backend
-          target: production
+          target: prd
