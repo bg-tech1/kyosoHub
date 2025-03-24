@@ -7,6 +7,7 @@ import { useProfileForm } from "../hooks/useProfileForm";
 import ProfileFormModal from "../components/ProfileFormModal";
 import Footer from "../components/Footer";
 import ParticipationRequestModal from "../components/ParticipationRequestModal";
+import ParticipationConfirmationModal from "../components/ParticipationConfirmationModal";
 import { useManagePost } from "../hooks/useManagePost";
 import EditPostModal from "../components/EditPostModal";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
@@ -50,10 +51,16 @@ const MyPage = () => {
         requests,
         requestLoading,
         fetchRequestError,
+        paritcipations,
+        paritcipationsLoading,
+        fetchParitcipationsError,
         showRequestModal,
+        showParticipationModal,
         closeRequestModal,
+        closeParticipationModal,
         fetchParticipationRequests,
         handleConfirmParticipationRequest,
+        handleConfirmParticipations,
         handleApproveParticipation,
         handleRejectParticipation
     } = useManageParitcipationRequest();
@@ -97,6 +104,7 @@ const MyPage = () => {
                     handleEdit={handleEdit}
                     handleDelete={handleDelete}
                     currentList={postData[activeTab]}
+                    handleConfirmParticipations={handleConfirmParticipations}
                     handleConfirmParticipationRequest={handleConfirmParticipationRequest}
                     loading={loading}
                     error={error}
@@ -115,6 +123,13 @@ const MyPage = () => {
                     closeModal={closeModal}
                     handleSubmitUserProfile={handleSubmitUserProfile}
                     fetchUserProfileError={fetchUserProfileError}
+                />
+                < ParticipationConfirmationModal
+                    isOpen={showParticipationModal}
+                    paritcipations={paritcipations}
+                    paritcipationsLoading={paritcipationsLoading}
+                    fetchParitcipationsError={fetchParitcipationsError}
+                    closeModal={closeParticipationModal}
                 />
                 <ParticipationRequestModal
                     isOpen={showRequestModal}

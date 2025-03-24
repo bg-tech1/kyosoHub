@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toHiragana } from "wanakana";
 export function useSearchPosts(posts) {
+    const sortedPosts = [...posts].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredPosts, setFilteredPosts] = useState(posts);
     const normalizeText = (text) => {
@@ -22,7 +23,7 @@ export function useSearchPosts(posts) {
         setFilteredPosts(filtered);
     };
     useEffect(() => {
-        setFilteredPosts(posts);
+        setFilteredPosts(sortedPosts);
     }, [posts]);
     return {
         searchTerm,

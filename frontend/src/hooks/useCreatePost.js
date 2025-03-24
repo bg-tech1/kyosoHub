@@ -1,7 +1,7 @@
 import { useState } from "react";
 import apiClient from "../api/apiClient";
 
-export function useCreatePost() {
+export function useCreatePost({ fetchAllPosts }) {
     const [showModal, setShowModal] = useState(false);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -16,13 +16,15 @@ export function useCreatePost() {
     const closeModal = () => {
         setShowModal(false);
     };
-    const handleSubmitPost = async () => {
+    const handleSubmitPost = async (e) => {
+        e.preventDefault();
         try {
             await apiClient.post("/post", {
                 title,
                 description,
                 category,
             });
+            await fetchAllPosts();
         } catch (error) {
             setCreatePostError(true);
             console.error(error);

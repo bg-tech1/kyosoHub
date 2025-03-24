@@ -21,6 +21,11 @@ export function useUserPosts(userId) {
     };
     const postCount = postData[TAB_RECRUITING].length;
     const paritcipationsCount = postData[TAB_PARTICIPATING].length;
+    const sortPosts = (posts) => {
+        return [...posts].sort((a, b) => {
+            return new Date(b.created_at) - new Date(a.created_at);
+        });
+    }
 
     const fetchAllTabsData = useCallback(async () => {
         if (userId === undefined) {
@@ -47,11 +52,13 @@ export function useUserPosts(userId) {
                         }
                     }),
                 ]);
+
                 setPostData({
-                    [TAB_RECRUITING]: recruitingRes.data.posts || [],
-                    [TAB_PARTICIPATING]: participatingRes.data.posts || [],
-                    [TAB_PENDING]: pendingRes.data.posts || [],
+                    [TAB_RECRUITING]: sortPosts(recruitingRes.data.posts) || [],
+                    [TAB_PARTICIPATING]: sortPosts(participatingRes.data.posts) || [],
+                    [TAB_PENDING]: sortPosts(pendingRes.data.posts) || [],
                 });
+                console.log(sortPosts(recruitingRes.data.posts));
             } catch (err) {
                 setError("データ取得に失敗しました");
                 console.error(err);

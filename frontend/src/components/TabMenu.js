@@ -1,5 +1,6 @@
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import { format } from "date-fns";
 const TAB_RECRUITING = "recruiting";
 const TAB_PARTICIPATING = "participating";
 const TAB_PENDING = "pending";
@@ -10,6 +11,7 @@ const TabMenu = (
         handleEdit,
         handleDelete,
         currentList,
+        handleConfirmParticipations,
         handleConfirmParticipationRequest,
         loading,
         error,
@@ -65,11 +67,20 @@ const TabMenu = (
                                     <p className="text-gray-600 mt-2 whitespace-pre-wrap">{post.description}</p>
                                     <div className="mt-4">
                                         <span className="bg-blue-100 text-blue-600 text-sm px-3 py-1 rounded-full mr-2">
-                                            {post.category}
+                                            #{post.category}
                                         </span>
                                     </div>
+                                    <span className="absolute bottom-1 right-3 text-sm text-gray-400" >
+                                        投稿日時: {format(new Date(post.created_at), "yyyy/MM/dd/HH:mm")}
+                                    </span>
                                     {activeTab === TAB_RECRUITING && (
                                         <div className="mt-4 flex space-x-2">
+                                            <button
+                                                onClick={() => handleConfirmParticipations(post.id, "approved")}
+                                                className="bg-secondary text-white px-4 py-3 rounded-full hover:bg-tertiary transition-colors duration-300"
+                                            >
+                                                参加者確認
+                                            </button>
                                             <button
                                                 onClick={() => handleConfirmParticipationRequest(post.id, "pending")}
                                                 className="bg-secondary text-white px-4 py-3 rounded-full hover:bg-tertiary transition-colors duration-300"

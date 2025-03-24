@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ActionButtonForPost from "./ActionButtonForPost";
+import { format } from "date-fns";
 
 const PostCard = ({
     post,
@@ -26,6 +27,9 @@ const PostCard = ({
                     #{post.category}
                 </span>
             </div>
+            <span className="absolute bottom-1 right-3 text-sm text-gray-400" >
+                投稿日時: {format(new Date(post.created_at), "yyyy/MM/dd/HH:mm")}
+            </span>
             {postParticipationError[post.id] && (
                 <p className="text-red-500 text-sm mt-4">エラーが発生しました。もう一度お試しください。</p>
             )}

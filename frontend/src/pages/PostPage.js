@@ -13,6 +13,17 @@ import SearchBar from "../components/SearchBar";
 
 const PostPage = () => {
     const {
+        userProfile,
+    } = useMyProfile();
+
+    const {
+        posts,
+        fetchAllPosts,
+        loadingPosts,
+        fetchPostsError
+    } = useGetAllPosts();
+
+    const {
         showModal,
         openModal,
         closeModal,
@@ -23,16 +34,7 @@ const PostPage = () => {
         category,
         setCategory,
         createPostError,
-        handleSubmitPost } = useCreatePost();
-    const {
-        userProfile,
-    } = useMyProfile();
-
-    const {
-        posts,
-        loadingPosts,
-        fetchPostsError
-    } = useGetAllPosts();
+        handleSubmitPost } = useCreatePost({ fetchAllPosts });
 
     const {
         searchTerm,
@@ -40,6 +42,7 @@ const PostPage = () => {
         filteredPosts,
         handleSearch
     } = useSearchPosts(posts);
+
     const {
         participationStatus,
         fetchParticipationStatus,
