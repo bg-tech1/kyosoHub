@@ -73,7 +73,13 @@ func (r *collaborationPostRepository) FindAll() ([]domain.CollaborationPost, err
 }
 
 func (r *collaborationPostRepository) Update(post *domain.CollaborationPost) error {
-	if err := r.db.Save(post).Error; err != nil {
+	if err := r.db.Model(&domain.CollaborationPost{}).
+		Where("id = ?", post.Id).
+		Updates(map[string]interface{}{
+			"title":       post.Title,
+			"description": post.Description,
+			"category":    post.Category,
+		}).Error; err != nil {
 		log.Println("ERROR: Failed to update collaboration post", err)
 		return err
 	}
