@@ -39,8 +39,9 @@ export function useManagePost(fetchPostData) {
         setShowDeletePostModal(true);
     }
 
-    const handleUpdatePost = async (postId, title, description, category) => {
-        await updatePost(postId, title, description, category);
+    const handleUpdatePost = async (e, postId, title, description, category) => {
+        await updatePost(e, postId, title, description, category);
+        await fetchPostData();
         setShowEditPostModal(false);
     }
 
@@ -50,7 +51,8 @@ export function useManagePost(fetchPostData) {
         setShowDeletePostModal(false);
     }
 
-    const updatePost = async (postId, title, description, category) => {
+    const updatePost = async (e, postId, title, description, category) => {
+        e.preventDefault();
         try {
             await apiClient.patch("/post", {
                 id: postId,
@@ -62,8 +64,7 @@ export function useManagePost(fetchPostData) {
             console.log(error);
             setUpdatePostError(true);
         } finally {
-            setUpdatePostError(false
-            );
+            setUpdatePostError(false);
         }
     }
 

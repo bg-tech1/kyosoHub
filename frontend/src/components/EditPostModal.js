@@ -4,7 +4,7 @@ const EditPostModal = ({ isOpen, postId, title, setTitle, description, setDescri
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded-2xl shadow-lg w-full sm:w-[30rem]">
-                <form onSubmit={() => { handleUpdatePost(postId, title, description, category) }}>
+                <form onSubmit={(e) => { handleUpdatePost(e, postId, title, description, category) }}>
                     <div
                         className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
                     >
