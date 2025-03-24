@@ -22,7 +22,8 @@ export function useUserPosts(userId) {
     const postCount = postData[TAB_RECRUITING].length;
     const paritcipationsCount = postData[TAB_PARTICIPATING].length;
     const sortPosts = (posts) => {
-        return [...posts].sort((a, b) => {
+        if (!posts) return [];
+        return posts.sort((a, b) => {
             return new Date(b.created_at) - new Date(a.created_at);
         });
     }
@@ -58,7 +59,6 @@ export function useUserPosts(userId) {
                     [TAB_PARTICIPATING]: sortPosts(participatingRes.data.posts) || [],
                     [TAB_PENDING]: sortPosts(pendingRes.data.posts) || [],
                 });
-                console.log(sortPosts(recruitingRes.data.posts));
             } catch (err) {
                 setError("データ取得に失敗しました");
                 console.error(err);
