@@ -30,7 +30,7 @@ func NewUserHandler(u usecase.UserUsecase, a usecase.AuthUsecase) UserHandler {
 }
 
 func (u *userHandler) LogoutHandler(c *gin.Context) {
-	c.SetCookie("jwt", "", -1, "/", "localhost", true, true)
+	c.SetCookie("jwt", "", -1, "/", "", true, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Logout successful"})
 }
 
@@ -50,7 +50,7 @@ func (u *userHandler) LoginHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return
 	}
-	c.SetCookie("jwt", token, 18000, "/", "localhost", true, true)
+	c.SetCookie("jwt", token, 18000, "/", "", true, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Login successful"})
 }
 
@@ -69,7 +69,7 @@ func (u *userHandler) RegisterHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return
 	}
-	c.SetCookie("jwt", token, 18000, "/", "localhost", true, true)
+	c.SetCookie("jwt", token, 18000, "/", "", true, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Register successful"})
 }
 
