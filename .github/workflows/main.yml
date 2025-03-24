@@ -9,7 +9,7 @@ env:
   AWS_REGION: ap-northeast-1
   ECR_REGISTRY: 992382548989.dkr.ecr.ap-northeast-1.amazonaws.com
   ECR_REPOSITORY: develop/kyosohub
-  ECS_CLUSTER: kyosoHubCluster
+  ECS_CLUSTER: KyosoHubClaster
   ECS_SERVICE: kyosoHub
   CONTAINER_NAME: kyosoHub
 
