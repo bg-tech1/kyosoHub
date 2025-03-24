@@ -20,6 +20,7 @@ func NewRouter(h handler.UserHandler, p handler.CollaborationPostHandler) *gin.E
 
 	r.DELETE("/post/:postId", p.DeletePostHandler)
 	r.DELETE("/user/profile/:id", h.DeleteUserProfileHandler)
+	r.GET("/healthz", func(c *gin.Context) { c.JSON(200, gin.H{"message": "ok"}) })
 	r.GET("/participationRecords", p.GetParticipationRecordsHandler)
 	r.GET("/posts", p.GetPostsHandler)
 	r.GET("/user/info", h.GetUserInfoHandler)
