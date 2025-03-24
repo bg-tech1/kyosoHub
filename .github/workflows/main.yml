@@ -8,6 +8,10 @@ on:
 env:
   AWS_REGION: ap-northeast-1
   ECR_REGISTRY: 992382548989.dkr.ecr.ap-northeast-1.amazonaws.com
+  ECR_REPOSITORY: develop/kyosohub
+  ECS_CLUSTER: kyosoHubCluster
+  ECS_SERVICE: kyosoHub
+  CONTAINER_NAME: kyosoHub
 
 jobs:
   build:
@@ -35,11 +39,26 @@ jobs:
         run: |
           aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
 
-      - name: Build and push API
+      - name: Build and push image
         uses: docker/build-push-action@v5
         with:
           push: true
           provenance: false
-          tags: ${{ env.ECR_REGISTRY }}/develop/kyosohub:latest
+          tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
           context: ./backend
           target: prd
+
+      - name: Render task definition
+        id: render
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: .github/ecs/task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+
+      - name: Deploy to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          task-definition: ${{ steps.render.outputs.task-definition }}
