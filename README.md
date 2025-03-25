@@ -6,9 +6,10 @@
 <img width="1400" alt="Kyosohub メイン画面" src="https://github.com/user-attachments/assets/c268086b-80ae-4a91-8525-1d0615013194">
 
 # URL
-https://kyosohub.com/  
-下記のゲストユーザーでログインして機能をご確認いただくことが可能です。
-メールアドレス：testUser@test.com
+https://kyosohub.com
+
+下記のゲストユーザーでログインして機能をご確認いただくことが可能です。<br>
+メールアドレス：testUser@test.com<br>
 パスワード:testUserPass
 
 # 使用技術
