@@ -14,7 +14,7 @@ const ActionButtonForPost = ({ post, userId, participationStatus, handleParticip
                 申請中
             </button>
         );
-    } else if (status === "approve") {
+    } else if (status === "approved") {
         button = (
             <button className="mt-5 bg-gray-600 text-white px-4 py-2 rounded-full" disabled>
                 参加中
