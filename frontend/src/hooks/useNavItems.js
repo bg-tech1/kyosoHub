@@ -9,7 +9,7 @@ export function useNavItems(isLoggedIn) {
     const fetchNavItems = (isLoggedIn) => {
         if (isLoggedIn) {
             setNavItems([
-                { label: "プロジェクト一覧", href: "/post" },
+                { label: "プロジェクト一覧", href: "/collaborationPosts" },
                 { label: "マイページ", href: "/mypage" }
             ]);
         } else {

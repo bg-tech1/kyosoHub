@@ -17,7 +17,7 @@ export function useRegisterUser() {
                 password,
             });
             setRegisterUserError(false);
-            navigate("/post");
+            navigate("/collaborationPosts");
         } catch (error) {
             console.log(error);
             setRegisterUserError(true);

@@ -17,7 +17,7 @@ const App = () => {
         <Route path="/unauthorized" element={<UnAuthorizedErrorPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path='/post' element={<PostPage />} />
+        <Route path='/collaborationPosts' element={<PostPage />} />
         <Route path="/profile/:userId" element={<UserProfilePage />} />
         <Route path='/mypage' element={<MyPage />} />
       </Routes>

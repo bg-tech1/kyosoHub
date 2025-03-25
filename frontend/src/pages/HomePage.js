@@ -13,9 +13,9 @@ const HomePage = () => {
     return (
         <div className='bg-primary min-h-screen'>
             <Header />
-            <HeroSection handleNavigate={() => navigate(isLoggedIn ? "/post" : "/login")} />
+            <HeroSection handleNavigate={() => navigate(isLoggedIn ? "/collaborationPosts" : "/login")} />
             <Features />
-            <CTA handleNavigate={() => navigate(isLoggedIn ? "/post" : "/login")} />
+            <CTA handleNavigate={() => navigate(isLoggedIn ? "/collaborationPosts" : "/login")} />
             <Footer />
         </div>
     )

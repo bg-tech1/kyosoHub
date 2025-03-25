@@ -16,7 +16,7 @@ export function useAuth() {
                 password
             });
             setLoginError("");
-            navigate("/post");
+            navigate("/collaborationPosts");
         } catch (error) {
             console.log(error);
             setLoginError(true);
