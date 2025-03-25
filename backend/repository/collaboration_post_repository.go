@@ -88,6 +88,10 @@ func (r *collaborationPostRepository) Update(post *domain.CollaborationPost) err
 }
 
 func (r *collaborationPostRepository) Delete(id string) error {
+	if err := r.db.Where("post_id = ?", id).Delete(&domain.CollaborationParticipant{}).Error; err != nil {
+		log.Println("ERROR: Failed to delete collaboration participation by Id", err)
+		return err
+	}
 	if err := r.db.Where("id = ?", id).Delete(&domain.CollaborationPost{}).Error; err != nil {
 		log.Println("ERROR: Failed to delete collaboration post by Id", err)
 		return err
