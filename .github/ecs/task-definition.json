@@ -18,6 +18,10 @@
             "essential": true,
             "environment": [
                 {
+                    "name": "ENV",
+                    "value": "prd"
+                },
+                {
                     "name": "POSTGRES_USER",
                     "value": "prd"
                 },
@@ -44,6 +48,18 @@
                 {
                     "name": "REACT_APP_FRONT_BASE_URL",
                     "value": "https://kyosohub.com"
+                },
+                {
+                    "name": "AWS_S3_BUCKET_NAME",
+                    "value": "kyosohub"
+                },
+                {
+                    "name": "AWS_S3_REGION",
+                    "value": "ap-northeast-1"
+                },
+                {
+                    "name": "AWS_CLOUDFRONT_BASE_URL",
+                    "value": "https://d2krepwe930mqr.cloudfront.net"
                 }
             ],
             "environmentFiles": [],
