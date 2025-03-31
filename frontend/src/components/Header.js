@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useHeaderState } from "../hooks/useHeaderState";
 import { useNavItems } from "../hooks/useNavItems";
 const Header = () => {
-    const { handleLogout, isLoggedIn, handleGuestLogin } = useAuth();
+    const { handleLogout, isLoggedIn, isGuest, handleGuestLogin } = useAuth();
     const { navItems } = useNavItems(isLoggedIn);
     const { isOpen, toggleMenu, closeMenu } = useHeaderState();
     return (
@@ -26,7 +26,7 @@ const Header = () => {
                     {navItems.map((item) => (
                         <a key={item.href} href={item.href} className="text-gray-600 hover:text-blue-500">{item.label}</a>
                     ))}
-                    {isLoggedIn ? (
+                    {isLoggedIn || isGuest ? (
                         <button
                             onClick={handleLogout}
                             className="justify-center bg-secondary text-white px-4 py-2 rounded-full hover:bg-tertiary transition-colors duration-300"
@@ -63,7 +63,7 @@ const Header = () => {
                             {item.label}
                         </a>
                     ))}
-                    {isLoggedIn ? (
+                    {isLoggedIn || isGuest ? (
                         <button
                             onClick={() => { handleLogout(); closeMenu(); }}
                             className="bg-secondary text-white px-4 py-2 rounded-full hover:bg-tertiary transition-colors duration-300"

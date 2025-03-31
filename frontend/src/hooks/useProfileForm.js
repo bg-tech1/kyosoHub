@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import apiClient from "../api/apiClient";
 
-export function useProfileForm(userProfile, fetchMyProfile) {
+export function useProfileForm(userProfile, fetchMyProfile, isGuest) {
     const [username, setUsername] = useState("");
     const [gender, setGender] = useState("");
     const [bio, setBio] = useState("");
@@ -26,6 +26,10 @@ export function useProfileForm(userProfile, fetchMyProfile) {
 
     const handleSubmitUserProfile = async (e) => {
         e.preventDefault();
+        if (isGuest) {
+            alert("ゲストユーザーはプロフィールを編集できません。ログインしてください。");
+            return;
+        }
         try {
             await apiClient.put("/user/profile", {
                 username,

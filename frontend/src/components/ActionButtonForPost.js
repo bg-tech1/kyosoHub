@@ -1,7 +1,25 @@
-const ActionButtonForPost = ({ post, userId, participationStatus, handleParticipation }) => {
+const ActionButtonForPost = ({
+    post,
+    userId,
+    participationStatus,
+    handleParticipation,
+    isGuest }) => {
     const status = participationStatus[post.id];
     let button;
-    if (post.user_id === userId) {
+    console.log("isGuest", isGuest);
+    if (isGuest) {
+        button = (
+            <button
+                className="mt-5 bg-secondary text-white px-4 py-2 rounded-full"
+                onClick={() => {
+                    alert("ゲストユーザーは参加できません。ログインしてください。");
+                }}
+            >
+                参加する
+            </button>
+        );
+    }
+    else if (post.user_id === userId) {
         button = (
             <button className="mt-5 bg-gray-600 text-white px-4 py-2 rounded-full" disabled>
                 自分の投稿

@@ -10,8 +10,13 @@ import { useRegisterParticipation } from "../hooks/useRegisterParticipation";
 import { usePagination } from "../hooks/usePagination";
 import { useSearchPosts } from "../hooks/useSearchPosts";
 import SearchBar from "../components/SearchBar";
+import { useAuth } from "../hooks/useAuth";
 
 const PostPage = () => {
+    const {
+        isGuest
+    } = useAuth();
+
     const {
         userProfile,
     } = useMyProfile();
@@ -34,7 +39,7 @@ const PostPage = () => {
         category,
         setCategory,
         createPostError,
-        handleSubmitPost } = useCreatePost({ fetchAllPosts });
+        handleSubmitPost } = useCreatePost({ fetchAllPosts, isGuest });
 
     const {
         searchTerm,
@@ -86,6 +91,7 @@ const PostPage = () => {
                                 postParticipationError={participationError}
                                 fetchPostsError={fetchPostsError}
                                 fetchStatusError={fetchStatusError}
+                                isGuest={isGuest}
                             />
                         ))}
                     </div>
@@ -128,6 +134,7 @@ const PostPage = () => {
                     setCategory={setCategory}
                     handleSubmitPost={handleSubmitPost}
                     createPostError={createPostError}
+                    isGuest={isGuest}
                 />
             }
         </div >

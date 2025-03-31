@@ -9,7 +9,8 @@ const PostCard = ({
     handleParticipation,
     postParticipationError,
     fetchPostsError,
-    fetchStatusError
+    fetchStatusError,
+    isGuest
 }) => {
     const navigate = useNavigate();
 
@@ -59,6 +60,7 @@ const PostCard = ({
                 userId={userId}
                 participationStatus={participationStatus}
                 handleParticipation={handleParticipation}
+                isGuest={isGuest}
             />
         </div>
     );

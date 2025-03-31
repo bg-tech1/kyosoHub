@@ -13,8 +13,13 @@ import EditPostModal from "../components/EditPostModal";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { useManageParitcipationRequest } from "../hooks/useManageParitcipationRequest";
 import { useProfileImage } from "../hooks/useProfileImage";
+import { useAuth } from "../hooks/useAuth";
 
 const MyPage = () => {
+    const {
+        isGuest
+    } = useAuth();
+
     const {
         userProfile,
         fetchMyProfile,
@@ -35,7 +40,7 @@ const MyPage = () => {
         closeModal,
         handleSubmitUserProfile,
         fetchUserProfileError
-    } = useProfileForm(userProfile, fetchMyProfile);
+    } = useProfileForm(userProfile, fetchMyProfile, isGuest);
 
     const {
         uploadProfileImage,

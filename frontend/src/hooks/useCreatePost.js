@@ -1,7 +1,7 @@
 import { useState } from "react";
 import apiClient from "../api/apiClient";
 
-export function useCreatePost({ fetchAllPosts }) {
+export function useCreatePost({ fetchAllPosts, isGuest }) {
     const [showModal, setShowModal] = useState(false);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -18,6 +18,10 @@ export function useCreatePost({ fetchAllPosts }) {
     };
     const handleSubmitPost = async (e) => {
         e.preventDefault();
+        if (isGuest) {
+            alert("ゲストユーザーは投稿できません。ログインしてください。");
+            return;
+        }
         try {
             await apiClient.post("/post", {
                 title,

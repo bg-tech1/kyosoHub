@@ -28,8 +28,8 @@ type S3StorageService struct {
 func NewS3StorageService() StorageService {
 	bucketName := os.Getenv("AWS_S3_BUCKET_NAME")
 	region := os.Getenv("AWS_S3_REGION")
-	awsProfile := os.Getenv("AWS_PROFILE") // ローカル開発用
-	env := os.Getenv("ENV")                // 本番環境では "production" とする
+	awsProfile := os.Getenv("AWS_PROFILE")
+	env := os.Getenv("ENV")
 
 	if bucketName == "" || region == "" {
 		log.Fatal("ERROR: AWS S3環境変数が設定されていません")
