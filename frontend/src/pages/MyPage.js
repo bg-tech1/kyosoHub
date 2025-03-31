@@ -12,6 +12,7 @@ import { useManagePost } from "../hooks/useManagePost";
 import EditPostModal from "../components/EditPostModal";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { useManageParitcipationRequest } from "../hooks/useManageParitcipationRequest";
+import { useProfileImage } from "../hooks/useProfileImage";
 
 const MyPage = () => {
     const {
@@ -35,6 +36,13 @@ const MyPage = () => {
         handleSubmitUserProfile,
         fetchUserProfileError
     } = useProfileForm(userProfile, fetchMyProfile);
+
+    const {
+        uploadProfileImage,
+        isUploading,
+        hasUploadError,
+        uploadProgress
+    } = useProfileImage(fetchMyProfile);
 
     const {
         postData,
@@ -97,7 +105,18 @@ const MyPage = () => {
         <div className="min-h-screen bg-primary">
             <Header />
             <main className="max-w-4xl mx-auto px-4 py-8">
-                <UserProfile userProfile={userProfile} postCount={postCount} paritcipationsCount={paritcipationsCount} handleEditProfile={handleEditProfile} fetchMyProfileError={fetchMyProfileError} isOwner={true} />
+                <UserProfile
+                    userProfile={userProfile}
+                    postCount={postCount}
+                    paritcipationsCount={paritcipationsCount}
+                    handleEditProfile={handleEditProfile}
+                    fetchMyProfileError={fetchMyProfileError}
+                    isOwner={true}
+                    uploadProfileImage={uploadProfileImage}
+                    isUploading={isUploading}
+                    hasUploadError={hasUploadError}
+                    uploadProgress={uploadProgress}
+                />
                 <TabMenu
                     activeTab={activeTab}
                     handleTabChange={handleTabChange}

@@ -34,7 +34,6 @@ export function useProfileForm(userProfile, fetchMyProfile) {
                 birthdate,
             });
             await fetchMyProfile();
-
         } catch (err) {
             console.error(err);
             setFetchUserProfileError(true);

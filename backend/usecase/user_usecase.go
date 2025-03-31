@@ -110,23 +110,19 @@ func (u *userUsecase) UpdateUserProfile(profile *domain.UserProfile) error {
 	return nil
 }
 
-// usecase/user_profile_usecase.go
 func (u *userUsecase) UpdateAvatar(userId string, file multipart.File, fileHeader *multipart.FileHeader) error {
-	// まず、ユーザーが存在するか確認
 	_, err := u.profileRepo.FindByUserId(userId)
 	if err != nil {
 		log.Println("ERROR: ユーザープロフィールが見つかりません")
 		return err
 	}
 
-	// S3に画像をアップロード
 	fileName, err := u.storageService.UploadFile(file, fileHeader, userId)
 	if err != nil {
 		log.Println("ERROR: 画像のアップロードに失敗しました")
 		return err
 	}
 
-	// プロフィールのAvatarUrlを更新
 	baseUrl := os.Getenv("AWS_CLOUDFRONT_BASE_URL")
 	fullURL := fmt.Sprintf("%s/%s", baseUrl, fileName)
 	err = u.profileRepo.UpdateAvatar(userId, fullURL)
