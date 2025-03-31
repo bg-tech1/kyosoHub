@@ -3,9 +3,12 @@ package usecase
 import (
 	"fmt"
 	"kyosohub/domain"
+	"kyosohub/pkg/storage"
 	"kyosohub/pkg/util"
 	"kyosohub/repository"
 	"log"
+	"mime/multipart"
+	"os"
 )
 
 type UserUsecase interface {
@@ -14,17 +17,19 @@ type UserUsecase interface {
 	RegisterUser(user *domain.User) error
 	RegisterUserProfile(profile *domain.UserProfile) error
 	GetUserProfile(id string) (*domain.UserProfile, error)
+	UpdateAvatar(userId string, file multipart.File, fileHeader *multipart.FileHeader) error
 	UpdateUserProfile(profile *domain.UserProfile) error
 	DeleteUserProfile(id string) error
 }
 
 type userUsecase struct {
-	repo        repository.UserRepository
-	profileRepo repository.UserProfileRepository
+	repo           repository.UserRepository
+	profileRepo    repository.UserProfileRepository
+	storageService storage.StorageService
 }
 
-func NewUserUsecase(repo repository.UserRepository, profileRepo repository.UserProfileRepository) UserUsecase {
-	return &userUsecase{repo: repo, profileRepo: profileRepo}
+func NewUserUsecase(repo repository.UserRepository, profileRepo repository.UserProfileRepository, storageService storage.StorageService) UserUsecase {
+	return &userUsecase{repo: repo, profileRepo: profileRepo, storageService: storageService}
 }
 
 func (u *userUsecase) LoginUser(email, passeord string) (*domain.User, error) {
@@ -102,6 +107,35 @@ func (u *userUsecase) UpdateUserProfile(profile *domain.UserProfile) error {
 		return err
 	}
 	log.Println("INFO: User profile updated successfully")
+	return nil
+}
+
+// usecase/user_profile_usecase.go
+func (u *userUsecase) UpdateAvatar(userId string, file multipart.File, fileHeader *multipart.FileHeader) error {
+	// まず、ユーザーが存在するか確認
+	_, err := u.profileRepo.FindByUserId(userId)
+	if err != nil {
+		log.Println("ERROR: ユーザープロフィールが見つかりません")
+		return err
+	}
+
+	// S3に画像をアップロード
+	fileName, err := u.storageService.UploadFile(file, fileHeader, userId)
+	if err != nil {
+		log.Println("ERROR: 画像のアップロードに失敗しました")
+		return err
+	}
+
+	// プロフィールのAvatarUrlを更新
+	baseUrl := os.Getenv("AWS_CLOUDFRONT_BASE_URL")
+	fullURL := fmt.Sprintf("%s/%s", baseUrl, fileName)
+	err = u.profileRepo.UpdateAvatar(userId, fullURL)
+	if err != nil {
+		log.Println("ERROR: プロフィール画像URLの更新に失敗しました")
+		return err
+	}
+
+	log.Println("INFO: プロフィール画像を正常に更新しました")
 	return nil
 }
 

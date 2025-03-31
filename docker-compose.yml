@@ -21,6 +21,7 @@ services:
       target: dev
     volumes:
       - ./backend:/app
+      - ~/.aws:/root/.aws
     depends_on:
       - db
     ports:

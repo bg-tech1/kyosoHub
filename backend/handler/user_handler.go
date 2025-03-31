@@ -13,9 +13,11 @@ type UserHandler interface {
 	LoginHandler(c *gin.Context)
 	LogoutHandler(c *gin.Context)
 	RegisterHandler(c *gin.Context)
+	GuestLoginHandler(c *gin.Context)
 	GetUserInfoHandler(c *gin.Context)
 	GetUserProfileHandler(c *gin.Context)
 	UpdateUserProfileHandler(c *gin.Context)
+	UpdateAvatarHandler(c *gin.Context)
 	DeleteUserProfileHandler(c *gin.Context)
 	RegisterUserProfileHandler(c *gin.Context)
 }
@@ -71,6 +73,16 @@ func (u *userHandler) RegisterHandler(c *gin.Context) {
 	}
 	c.SetCookie("jwt", token, 18000, "/", "", true, true)
 	c.JSON(http.StatusOK, gin.H{"message": "Register successful"})
+}
+
+func (u *userHandler) GuestLoginHandler(c *gin.Context) {
+	token, err := u.authUsecase.GenerateToken("guest")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+		return
+	}
+	c.SetCookie("jwt", token, 18000, "/", "", true, true)
+	c.JSON(http.StatusOK, gin.H{"message": "Guest login successful"})
 }
 
 func (u *userHandler) GetUserInfoHandler(c *gin.Context) {
@@ -132,6 +144,43 @@ func (u *userHandler) GetUserProfileHandler(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, gin.H{"userProfile": profile})
 	}
+}
+
+func (u *userHandler) UpdateAvatarHandler(c *gin.Context) {
+	token, err := c.Cookie("jwt")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	userId, err := u.authUsecase.ValidateToken(token)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	file, fileHeader, err := c.Request.FormFile("avatar")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file"})
+		return
+	}
+
+	if fileHeader.Size > 5*1024*1024 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Image size must be less than 5MB"})
+		return
+	}
+
+	contentType := fileHeader.Header.Get("Content-Type")
+	if contentType != "image/jpeg" && contentType != "image/png" && contentType != "image/gif" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Only JPG, PNG, and GIF formats are supported"})
+		return
+	}
+
+	if err := u.userUsecase.UpdateAvatar(userId, file, fileHeader); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update avatar"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Avatar updated successfully"})
 }
 
 func (u *userHandler) UpdateUserProfileHandler(c *gin.Context) {

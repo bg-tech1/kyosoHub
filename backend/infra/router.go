@@ -28,11 +28,13 @@ func NewRouter(h handler.UserHandler, p handler.CollaborationPostHandler) *gin.E
 	r.PATCH("/post", p.UpdatePostHandler)
 	r.PATCH("/participation/:userId/:postId/:status", p.UpdateParticipationStatusHandler)
 	r.POST("/auth/login", h.LoginHandler)
+	r.POST("/auth/guest-login", h.GuestLoginHandler)
 	r.POST("/auth/logout", h.LogoutHandler)
 	r.POST("/participation", p.RegisterParticipationHandler)
 	r.POST("/post", p.RegisterPostHandler)
-	r.POST("/user/profile", h.RegisterUserProfileHandler)
 	r.POST("/user", h.RegisterHandler)
+	r.POST("/user/profile", h.RegisterUserProfileHandler)
+	r.POST("/user/avatar", h.UpdateAvatarHandler)
 	r.PUT("/user/profile", h.UpdateUserProfileHandler)
 	return r
 }

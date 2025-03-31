@@ -4,6 +4,7 @@ type UserProfile struct {
 	Id        string `gorm:"primaryKey" json:"id"`
 	UserId    string `gorm:"not null;uniqueIndex" json:"user_id"`
 	Username  string `gorm:"not null" json:"username"`
+	AvatarUrl string `gorm:"type:text" json:"avatar_url"`
 	Gender    string `gorm:"type:varchar(10)" json:"gender"`
 	Bio       string `gorm:"type:text" json:"bio"`
 	Birthdate string `gorm:"type:varchar(10)" json:"birthdate"`

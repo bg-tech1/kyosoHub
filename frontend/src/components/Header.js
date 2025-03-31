@@ -3,13 +3,18 @@ import { useAuth } from "../hooks/useAuth";
 import { useHeaderState } from "../hooks/useHeaderState";
 import { useNavItems } from "../hooks/useNavItems";
 const Header = () => {
-    const { handleLogout, isLoggedIn } = useAuth();
+    const { handleLogout, isLoggedIn, handleGuestLogin } = useAuth();
     const { navItems } = useNavItems(isLoggedIn);
     const { isOpen, toggleMenu, closeMenu } = useHeaderState();
     return (
         <header className="bg-primary shadow-md">
             <div className="max-w-6xl mx-auto px-5 py-4 flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-gray-800">KyosoHub</h1>
+                <h1
+                    className="text-2xl font-bold text-gray-800 cursor-pointer"
+                    onClick={() => window.location.href = '/'}
+                >
+                    KyosoHub
+                </h1>
                 <button
                     onClick={toggleMenu}
                     className="sm:hidden text-gray-600 hover:text-blue-500 focus:outline-none"
@@ -29,12 +34,20 @@ const Header = () => {
                             ログアウト
                         </button>
                     ) : (
-                        <a
-                            href="/login"
-                            className="justify-center bg-secondary text-white px-4 py-2 rounded-full hover:bg-tertiary transition-colors duration-300"
-                        >
-                            ログイン
-                        </a>
+                        <span className="space-x-4">
+                            <a
+                                href="/login"
+                                className="justify-center bg-secondary text-white px-4 py-2 rounded-full hover:bg-tertiary transition-colors duration-300"
+                            >
+                                ログイン
+                            </a>
+                            <a
+                                onClick={handleGuestLogin}
+                                className="justify-center bg-secondary text-white px-4 py-2 rounded-full hover:bg-tertiary transition-colors duration-300"
+                            >
+                                ゲストログイン
+                            </a>
+                        </span>
                     )}
                 </nav>
             </div>

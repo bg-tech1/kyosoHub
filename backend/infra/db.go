@@ -14,7 +14,7 @@ func NewDB() (*gorm.DB, error) {
 	var err error
 	var dsn string
 	var db *gorm.DB
-	if os.Getenv("APP_ENV") == "local" {
+	if os.Getenv("ENV") == "local" {
 		dsn = fmt.Sprintf(
 			"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 			os.Getenv("POSTGRES_LOCAL_HOSTNAME"),

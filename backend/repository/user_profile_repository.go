@@ -12,6 +12,7 @@ type UserProfileRepository interface {
 	FindById(id string) (*domain.UserProfile, error)
 	FindByUserId(userId string) (*domain.UserProfile, error)
 	Update(profile *domain.UserProfile) error
+	UpdateAvatar(userId, avatarUrl string) error
 	Delete(id string) error
 }
 
@@ -64,6 +65,17 @@ func (r *userProfileRepository) Update(profile *domain.UserProfile) error {
 		log.Println("ERROR: Failed to update user profile", err)
 	}
 	log.Println("INFO: Successfully updated user profile")
+	return nil
+}
+
+func (r *userProfileRepository) UpdateAvatar(userId, avatarUrl string) error {
+	if err := r.db.Model(&domain.UserProfile{}).
+		Where("user_id = ?", userId).
+		Update("avatar_url", avatarUrl).Error; err != nil {
+		log.Println("ERROR: Failed to update profile avatar", err)
+		return err
+	}
+	log.Println("INFO: Successfully updated profile avatar")
 	return nil
 }
 
