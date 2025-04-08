@@ -2,16 +2,33 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useAuth } from "../hooks/useAuth";
+import useFormValidation from "../hooks/useFormValidation";
+import { useMemo } from "react";
 
 const LoginPage = () => {
+    const initialValues = useMemo(() => ({
+        "email": "",
+        "password": ""
+    }), []);
+    const validationRules = useMemo(() => ({
+        "email": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+        "password": "^(?=.*[a-z]).{4,}$"
+    }), []);
+
     const {
-        email,
         setEmail,
-        password,
         setPassword,
         loginError,
         handleLogin
     } = useAuth();
+
+    const {
+        errors,
+        values,
+        setValues,
+        isFormValid
+    } = useFormValidation(initialValues, validationRules)
+
     return (
         <div className="flex flex-col min-h-screen bg-primary">
             <Header />
@@ -23,20 +40,25 @@ const LoginPage = () => {
                     <form onSubmit={handleLogin} className="space-y-4">
                         <div>
                             <label
-                                htmlFor="username"
+                                htmlFor="email"
                                 className="block mb-1 text-gray-700 font-medium"
                             >
                                 メールアドレス
                             </label>
                             <input
                                 type="text"
-                                id="username"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                id="email"
+                                value={values.email}
+                                onChange={(e) => {
+                                    setValues(prev => ({ ...prev, "email": e.target.value }));
+                                    setEmail(e.target.value);
+                                }}
                                 placeholder="メールアドレスを入力してください"
-                                required
                                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                             />
+                            {errors.email && (
+                                < p className="text-red-500 text-sm mb-4">有効なメールアドレスの形式で入力してください（例: example@example.com）</p>
+                            )}
                         </div>
                         <div>
                             <label
@@ -48,22 +70,39 @@ const LoginPage = () => {
                             <input
                                 type="password"
                                 id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                value={values.password}
+                                onChange={(e) => {
+                                    setValues(prev => ({ ...prev, "password": e.target.value }));
+                                    setPassword(e.target.value);
+                                }}
                                 placeholder="パスワードを入力してください"
-                                required
                                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                             />
+                            {errors.password && (
+                                < p className="text-red-500 text-sm mb-4">パスワードは4文字以上の必要があります。</p>
+                            )}
+
                         </div>
                         {loginError && (
-                            <p className="text-red-500 text-center font-bold">メールアドレスまたはパスワードが間違っています。</p>
+                            <p className="text-red-500 text-sm mb-4">メールアドレスまたはパスワードが間違っています。</p>
                         )}
-                        <button
-                            type="submit"
-                            className="block w-full mt-4 py-2 rounded bg-secondary text-white font-semibold hover:opacity-90 focus:opacity-90 transition-opacity"
-                        >
-                            Login
-                        </button>
+                        {isFormValid ? (
+                            <button
+                                type="submit"
+                                className="block w-full mt-4 py-2 rounded bg-secondary text-white font-semibold hover:opacity-90 focus:opacity-90 transition-opacity"
+                            >
+                                Login
+                            </button>
+                        ) : (
+                            <button
+                                type="submit"
+                                disabled
+                                className="block w-full mt-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold hover:opacity-90 focus:opacity-90 transition-opacity"
+                            >
+                                Login
+                            </button>
+
+                        )}
                     </form>
                     <div className="mt-4 text-center">
                         <Link to="/register" className="text-blue-500 underline">
@@ -71,9 +110,9 @@ const LoginPage = () => {
                         </Link>
                     </div>
                 </div>
-            </div>
+            </div >
             <Footer />
-        </div>
+        </div >
     );
 };
 

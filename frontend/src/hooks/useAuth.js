@@ -64,12 +64,9 @@ export function useAuth() {
         }
     };
 
-
-
     return {
         email,
         setEmail,
-        password,
         setPassword,
         isLoggedIn,
         loginError,

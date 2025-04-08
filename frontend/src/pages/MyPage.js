@@ -14,6 +14,8 @@ import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { useManageParitcipationRequest } from "../hooks/useManageParitcipationRequest";
 import { useProfileImage } from "../hooks/useProfileImage";
 import { useAuth } from "../hooks/useAuth";
+import useFormValidation from "../hooks/useFormValidation";
+import { useMemo } from "react";
 
 const MyPage = () => {
     const {
@@ -98,6 +100,24 @@ const MyPage = () => {
         closeDeletePostModal
     } = useManagePost(fetchPostData, fetchParticipationRequests);
 
+    const initialValues = useMemo(() => ({
+        "title": title || "",
+        "description": description || "",
+        "category": category || ""
+    }), [postId]);
+
+    const validationRules = useMemo(() => ({
+        title: "^[\\p{L}\\p{N}\\p{P}\\p{S}\\s]{1,}$",
+        category: "^[\\p{L}\\p{N}\\p{P}\\p{S}\\s]{1,}$",
+        description: "^[\\p{L}\\p{N}\\p{P}\\p{S}\\s]{10,}$"
+    }), []);
+
+    const {
+        errors,
+        values,
+        setValues,
+        isFormValid
+    } = useFormValidation(initialValues, validationRules)
     if (!userProfile) {
         return <div>ユーザー情報が見つかりません</div>;
     }
@@ -176,6 +196,10 @@ const MyPage = () => {
                     updatePostError={updatePostError}
                     closeModal={closeEditPostModal}
                     handleUpdatePost={handleUpdatePost}
+                    errors={errors}
+                    values={values}
+                    setValues={setValues}
+                    isFormValid={isFormValid}
                 />
                 <DeleteConfirmationModal
                     isOpen={showDeletePostModal}

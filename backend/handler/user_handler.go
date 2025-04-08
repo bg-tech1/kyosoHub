@@ -37,12 +37,17 @@ func (u *userHandler) LogoutHandler(c *gin.Context) {
 }
 
 func (u *userHandler) LoginHandler(c *gin.Context) {
-	var userInput domain.User
-	if err := c.BindJSON(&userInput); err != nil {
+	var user domain.User
+	if err := c.BindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
-	userInfo, err := u.userUsecase.LoginUser(userInput.Email, userInput.Password)
+	if err := user.Validate(true); err != nil {
+		log.Println("ERROR:Invalid Data", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Data"})
+		return
+	}
+	userInfo, err := u.userUsecase.LoginUser(user.Email, user.Password)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "User not found"})
 		return
@@ -62,6 +67,11 @@ func (u *userHandler) RegisterHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
+	if err := user.Validate(false); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Data"})
+		return
+	}
+
 	if err := u.userUsecase.RegisterUser(&user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register user"})
 		return
@@ -190,6 +200,12 @@ func (u *userHandler) UpdateUserProfileHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
+	if err := profile.Validate(); err != nil {
+		log.Println("ERROR: Invalid Data", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Data"})
+		return
+	}
+
 	token, err := c.Cookie("jwt")
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
@@ -221,6 +237,11 @@ func (u *userHandler) RegisterUserProfileHandler(c *gin.Context) {
 	if err := c.BindJSON(&profile); err != nil {
 		log.Println("ERROR: Invalid JSON", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		return
+	}
+	if err := profile.Validate(); err != nil {
+		log.Println("ERROR: Invalid Data", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Data"})
 		return
 	}
 	if err := u.userUsecase.RegisterUserProfile(&profile); err != nil {

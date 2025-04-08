@@ -10,7 +10,7 @@ const PostCard = ({
     postParticipationError,
     fetchPostsError,
     fetchStatusError,
-    isGuest
+    isGuest,
 }) => {
     const navigate = useNavigate();
 

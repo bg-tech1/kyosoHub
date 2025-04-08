@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"errors"
 	"time"
 )
 
@@ -12,7 +13,28 @@ type CollaborationParticipant struct {
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
 
-	// 外部キーの設定
 	CollaborationPost *CollaborationPost `gorm:"foreignKey:PostId;constraint:OnDelete:CASCADE" json:"collaborationPost,omitempty"`
 	User              *User              `gorm:"foreignKey:UserId;constraint:OnDelete:CASCADE" json:"user,omitempty"`
+}
+
+func (cp *CollaborationParticipant) Validate() error {
+	if cp.UserId == "" {
+		return errors.New("user_id is required")
+	}
+
+	if cp.PostId == "" {
+		return errors.New("post_id is required")
+	}
+
+	validStatuses := map[string]bool{
+		"pending":  true,
+		"approved": true,
+		"rejected": true,
+	}
+
+	if !validStatuses[cp.Status] {
+		return errors.New("status must be 'pending', 'approved', or 'rejected'")
+	}
+
+	return nil
 }

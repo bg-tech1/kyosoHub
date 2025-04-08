@@ -8,6 +8,10 @@ const CreatePostModal = ({
     setCategory,
     handleSubmitPost,
     createPostError,
+    errors,
+    values,
+    setValues,
+    isFormValid
 }) => {
 
     return (
@@ -28,10 +32,15 @@ const CreatePostModal = ({
                         id="title"
                         type="text"
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
-                        required
+                        onChange={(e) => {
+                            setValues(prev => ({ ...prev, "title": e.target.value }));
+                            setTitle(e.target.value);
+                        }}
+                        className="w-full border border-gray-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring-2 focus:ring-primary"
                     />
+                    {errors.title && (
+                        <p className="text-red-500 text-sm mb-4">タイトルを入力してください</p>
+                    )}
 
                     <label className="block mb-2 text-gray-700" htmlFor="description">
                         詳細
@@ -39,10 +48,15 @@ const CreatePostModal = ({
                     <textarea
                         id="description"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
-                        required
+                        onChange={(e) => {
+                            setValues(prev => ({ ...prev, "description": e.target.value }));
+                            setDescription(e.target.value);
+                        }}
+                        className="w-full border border-gray-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring-2 focus:ring-primary"
                     />
+                    {errors.description && (
+                        <p className="text-red-500 text-sm mb-4">詳細は10文字以上入力してください</p>
+                    )}
 
                     <label className="block mb-2 text-gray-700" htmlFor="category">
                         カテゴリ
@@ -51,14 +65,20 @@ const CreatePostModal = ({
                         id="category"
                         type="text"
                         value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
-                        required
+                        onChange={(e) => {
+                            setValues(prev => ({ ...prev, "category": e.target.value }));
+                            setCategory(e.target.value);
+                        }}
+                        className="w-full border border-gray-300 rounded px-3 py-2 mb-1 focus:outline-none focus:ring-2 focus:ring-primary"
                     />
+                    {errors.category && (
+                        <p className="text-red-500 text-sm mb-4">カテゴリを入力してください</p>
+                    )}
+
                     {createPostError && (
                         <p className="text-red-500 text-sm mb-4">エラーが発生しました。もう一度お試しください。</p>
                     )}
-                    <div className="flex justify-end">
+                    <div className="flex justify-end mt-4">
                         <button
                             type="button"
                             onClick={closeModal}
@@ -66,12 +86,22 @@ const CreatePostModal = ({
                         >
                             キャンセル
                         </button>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 rounded bg-secondary text-white font-semibold hover:opacity-90"
-                        >
-                            投稿
-                        </button>
+                        {isFormValid ? (
+                            <button
+                                type="submit"
+                                className="px-4 py-2 rounded bg-secondary text-white font-semibold hover:opacity-90"
+                            >
+                                投稿
+                            </button>
+                        ) : (
+                            <button
+                                type="submit"
+                                disabled
+                                className="px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold"
+                            >
+                                投稿
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

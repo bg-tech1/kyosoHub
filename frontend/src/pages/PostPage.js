@@ -11,8 +11,23 @@ import { usePagination } from "../hooks/usePagination";
 import { useSearchPosts } from "../hooks/useSearchPosts";
 import SearchBar from "../components/SearchBar";
 import { useAuth } from "../hooks/useAuth";
+import useFormValidation from "../hooks/useFormValidation";
+import { useMemo } from "react";
 
 const PostPage = () => {
+
+    const initialValues = useMemo(() => ({
+        "title": "",
+        "description": "",
+        "category": ""
+    }), []);
+
+    const validationRules = useMemo(() => ({
+        title: "^[\\p{L}\\p{N}\\p{P}\\p{S}\\s]{1,}$",
+        category: "^[\\p{L}\\p{N}\\p{P}\\p{S}\\s]{1,}$",
+        description: "^[\\p{L}\\p{N}\\p{P}\\p{S}\\s]{10,}$"
+    }), []);
+
     const {
         isGuest
     } = useAuth();
@@ -67,6 +82,14 @@ const PostPage = () => {
         handleNextPage,
         handlePrevPage
     } = usePagination(filteredPosts, 5);
+
+    const {
+        errors,
+        values,
+        setValues,
+        isFormValid
+    } = useFormValidation(initialValues, validationRules)
+
 
     if (!userProfile || !posts || !filteredPosts || !participationStatus || loadingPosts || loadingStatus) {
         return <div>ローディング中</div>;
@@ -135,6 +158,10 @@ const PostPage = () => {
                     handleSubmitPost={handleSubmitPost}
                     createPostError={createPostError}
                     isGuest={isGuest}
+                    errors={errors}
+                    values={values}
+                    setValues={setValues}
+                    isFormValid={isFormValid}
                 />
             }
         </div >

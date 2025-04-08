@@ -24,11 +24,8 @@ export function useRegisterUser() {
         }
     };
     return {
-        username,
         setUsername,
-        email,
         setEmail,
-        password,
         setPassword,
         registerUserError,
         handleRegister

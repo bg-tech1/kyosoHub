@@ -45,9 +45,9 @@ const ProfileFormModal = ({
                         className="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-primary"
                     >
                         <option value="">選択してください</option>
-                        <option value="男性">男性</option>
-                        <option value="女性">女性</option>
-                        <option value="回答しない">回答しない</option>
+                        <option value="male">男性</option>
+                        <option value="female">女性</option>
+                        <option value="other">回答しない</option>
                     </select>
                     <label className="block mb-2 text-gray-700" htmlFor="birthdate">
                         生年月日（オプション）

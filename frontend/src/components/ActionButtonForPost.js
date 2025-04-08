@@ -6,7 +6,6 @@ const ActionButtonForPost = ({
     isGuest }) => {
     const status = participationStatus[post.id];
     let button;
-    console.log("isGuest", isGuest);
     if (isGuest) {
         button = (
             <button
